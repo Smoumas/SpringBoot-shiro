@@ -72,6 +72,7 @@ public class HelloController {
     }
 
     /*
+    shiro无需配置/logout的处理请求，直接访问/logout,不需要具体实现
     @RequestMapping("/doLogout")
     public String logout(){
         return "login";

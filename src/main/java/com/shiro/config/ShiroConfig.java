@@ -80,10 +80,11 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    //为登录密码添加SHA256校验
     @Bean(name = "userRealm")
     public UserRealm getRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher hashedCredentialsMatcher){
         UserRealm userRealm = new UserRealm();
-        //userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return userRealm;
     }
 
