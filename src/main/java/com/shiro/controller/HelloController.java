@@ -1,6 +1,7 @@
 package com.shiro.controller;
 
 import com.shiro.service.UserService;
+import org.apache.ibatis.annotations.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -69,4 +70,12 @@ public class HelloController {
             return "/login";
         }
     }
+
+    /*
+    @RequestMapping("/doLogout")
+    public String logout(){
+        return "login";
+    }
+    */
+
 }

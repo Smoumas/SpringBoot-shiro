@@ -1,12 +1,15 @@
 package com.shiro.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,11 +41,19 @@ public class ShiroConfig {
         Map<String,String> filterMap = new LinkedHashMap<String,String>();
         filterMap.put("/add","authc");
         filterMap.put("/update","authc");
+        filterMap.put("/logout","logout");
 
         //授权过滤器
         //授权拦截后，shiro会自动跳转到未授权页面
         filterMap.put("/add","perms[user:add]");
         filterMap.put("/update","perms[user:update]");
+
+        //设置退出后返回登录页面
+        Map<String,Filter> filters = new LinkedHashMap<String, Filter>();
+        LogoutFilter logoutFilter = new LogoutFilter();
+        logoutFilter.setRedirectUrl("/login");
+        filters.put("logout",logoutFilter);
+
         /*
             可以使用通配符进行统一过滤
             如统一拦截user目录下的所有资源
@@ -57,6 +68,7 @@ public class ShiroConfig {
         //设置未授权提示页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/unAuth");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
+        shiroFilterFactoryBean.setFilters(filters);
         return shiroFilterFactoryBean;
     }
 
@@ -69,8 +81,10 @@ public class ShiroConfig {
     }
 
     @Bean(name = "userRealm")
-    public UserRealm getRealm(){
-        return new UserRealm();
+    public UserRealm getRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher hashedCredentialsMatcher){
+        UserRealm userRealm = new UserRealm();
+        //userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+        return userRealm;
     }
 
     /**
@@ -80,5 +94,12 @@ public class ShiroConfig {
     @Bean(name = "shiroDialect")
     public ShiroDialect getShiroDialect(){
         return new ShiroDialect();
+    }
+
+    @Bean(name = "hashedCredentialsMatcher")
+    public HashedCredentialsMatcher getHashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName("SHA-256");
+        return hashedCredentialsMatcher;
     }
 }
