@@ -1,10 +1,7 @@
 package com.shiro.mapper;
 
 import com.shiro.domain.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -18,4 +15,7 @@ public interface UserMapper {
     @Results({@Result(property = "id",column = "id"),@Result(property = "name",column = "name"),@Result(property = "password",column = "password"),
             @Result(property = "perms",column = "perms")})
     public User findUserByID(Integer id);
+
+    @Insert("INSERT INTO user(name,password,salt) VALUES(#{name},#{password},#{salt}")
+    public void insertUser(String name,String password,String salt);
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     User findUserByName(String name);
     User findUserByID(Integer id);
+    void register(String name,String password,String salt);
 }
