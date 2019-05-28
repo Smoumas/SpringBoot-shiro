@@ -16,6 +16,6 @@ public interface UserMapper {
             @Result(property = "perms",column = "perms")})
     public User findUserByID(Integer id);
 
-    @Insert("INSERT INTO user(name,password,salt) VALUES(#{name},#{password},#{salt}")
-    public void insertUser(String name,String password,String salt);
+    @Insert("INSERT INTO user(name,password,salt) VALUES(#{name},#{password},#{salt})")
+    public void insertUser(User user);
 }

@@ -101,6 +101,7 @@ public class ShiroConfig {
     public HashedCredentialsMatcher getHashedCredentialsMatcher(){
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("SHA-256");
+//        hashedCredentialsMatcher.setHashIterations(1024);
         return hashedCredentialsMatcher;
     }
 }

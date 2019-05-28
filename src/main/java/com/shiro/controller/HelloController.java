@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HelloController {
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/hello")
     public String hello(){
         return "test";
@@ -33,6 +36,11 @@ public class HelloController {
     @RequestMapping("/login")
     public String login(){
         return "login";
+    }
+
+    @RequestMapping("/register")
+    public String register(){
+        return "register";
     }
 
     @RequestMapping("/unAuth")
@@ -71,6 +79,12 @@ public class HelloController {
         }
     }
 
+    @RequestMapping("/registerAction")
+    public String registerAction(String name,String password,Model model){
+        userService.register(name,password);
+        //注册后登录跳转
+        return loginAction(name,password,model);
+    }
     /*
     shiro无需配置/logout的处理请求，直接访问/logout,不需要具体实现
     @RequestMapping("/doLogout")
